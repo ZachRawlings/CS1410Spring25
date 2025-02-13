@@ -8,20 +8,21 @@ class Animal:
 class Dog(Animal):
     def __init__(self, name, age):
         super().__init__(name, age)
+    #polymorphing the sound method
     def sound(self):
-        print("bark")
+        print("Bark!")
 
 class Cat(Animal):
     def __init__(self, name, age):
         super().__init__(name, age)
     def sound(self):
-        print("meow")
+        print("Meow!")
 
 class Bird(Animal):
     def __init__(self, name, age):
         super().__init__(name, age)
     def sound(self):
-        print("chirp")
+        print("Chirp!")
 
 d = Dog("Tommy", 5)
 c = Cat("Kitty", 3)
