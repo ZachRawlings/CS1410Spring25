@@ -1,127 +1,102 @@
 import random
+from typing import Optional
+# Base Character Class
 class Character:
-    def __init__(self, name, health, strength):
+    def __init__(self, name, health, strength)-> any:
         self.name = name
         self.health = health
         self.strength = strength
     
-    def take_damage(self, damage):
-        self.health -= damage
-        print(f"{self.name} took {damage} damage and now has {self.health} health")
+    def take_damage(self, amount):
+        self.health -= amount
+        if self.health <= 0:
+            print(f"{self.name} has been defeated!")
     
     def is_alive(self):
-        if self.health > 0:
-            print(f"{self.name} is alive")
-            return True   
-        else:
-            print(f"{self.name} is dead")
-            return False
-            
+        return self.health > 0
+
+    def interact_with_batman(self):
+        pass  # To be implemented in subclasses
+
+# Hero Class: Batman
+class Hero(Character):
+    def __init__(self, name="Batman", health=100, strength=20, gadgets=None):
+        super().__init__(name, health, strength)
+        self.gadgets = gadgets if gadgets else ["Batarang", "Grappling Hook", "Smoke Bomb"]
     
-class Batman(Character):
-    def __init__(self, name = "Batman", health = 100, strength = 10):
-        super().__init__(name, health, strength)
-        self.gadgets = {"batarang": 10, "smoke bomb": 5, "grappling hook": 15}
-            
-    def use_gadget(self, gadget):
-        if gadget in self.gadgets:
-            print(f"{self.name} used {gadget}")
-            return self.gadgets[gadget]
+    def use_gadget(self, gadget_name):
+        if gadget_name in self.gadgets:
+            print(f"{self.name} uses the {gadget_name}!")
         else:
-            print(f"{self.name} does not have {gadget}")
-            return 0
-    def rest(self):
-        print(f"{self.name} is resting")
-        self.health += 5
-        return self.health
-        
-class Joker(Character):
-    def __init__(self, name = "Joker", health = 50, strength = 5):
+            print(f"{self.name} doesn't have {gadget_name}!")
+    
+    def fight(self, villain:'Villain'):
+        print(f"{self.name} fights {villain.name}!")
+        villain.take_damage(self.strength)
+        if not villain.is_alive():
+            print(f"{villain.name} has been defeated by Batman!")
+
+# Villain Class
+class Villain(Character):
+    def __init__(self, name, health, strength, crime_level):
         super().__init__(name, health, strength)
-        self.crime_level = 20
-            
+        self.crime_level = crime_level
+    
     def commit_crime(self):
-        print(f"{self.name} committed a crime")
-        self.crime_level += 5
-        return self.crime_level
-        
+        print(f"{self.name} is causing chaos in Gotham!")
+    
     def interact_with_batman(self):
-        print(f"{self.name} is interacting with Batman")
-        if self.crime_level <= 20:
-            print(f"{self.name} ran from Batman")
+        if random.choice([True, False]):
+            print(f"{self.name}: 'Ha-ha! Gotham is mine!'")
         else:
-            print(f"{self.name} is fighting Batman")
-            for i in range(random.randint(1, 5)):
-                attack = random.randint(1, 3)
-                if attack == 1:
-                    print("Batman dodged the attack")
-                elif attack == 2:
-                    print(f"{self.name} hit Batman")
-                    Batman.take_damage(5)
-                else:
-                    print(f"Batman hit {self.name}")
-                    self.take_damage(10)
-        self.crime_level -= 5
-        return self.crime_level
-    
-    def rest(self):
-        print(f"{self.name} is resting")
-        self.health += 5
-        return self.health
-    
+            print(f"{self.name} tries to escape, but Batman is faster!")
+
+# Citizen Class
 class Citizen(Character):
-    def __init__(self, name, health = 10, strength=1):
-        super().__init__(name, health, strength)
-        self.name = name
-        self.fear_level = 0
-
+    def __init__(self, name, fear_level):
+        super().__init__(name, health=50, strength=5)
+        self.fear_level = fear_level
+    
     def call_batman(self):
-        print(f"{self.name} called Batman")
-        self.fear_level += 5
-        return self.fear_level
-        
+        print(f"{self.name} calls Batman for help!")
+    
     def interact_with_batman(self):
-        print(f"{self.name} assisted Batman")
-        self.fear_level -= 2
-        if self.fear_level <= 0:
-            self.fear_level == 0 
-            print(f"{self.name} thanked Batman")
-        else:
-            print(f"{self.name} is still afraid")
-        return self.fear_level
-        
-class Gotham:
+        print(f"{self.name} thanks Batman for keeping Gotham safe!")
+
+# Gotham City Class
+class GothamCity:
     def __init__(self):
-        self.citizens = []
-        self.joker = Joker()
-        self.batman = Batman()
-        
-    def add_citizen(self, citizen):
-        self.citizens.append(citizen)
-        
+        self.characters = []
+    
+    def add_character(self, character:str):
+        self.characters.append(character)
+    
     def simulate_night(self):
-        for citizen in self.citizens:
-            for i in range(random.randint(1, 5)):
-                self.joker.commit_crime()
-            Citizen.call_batman(citizen)
-            Citizen.interact_with_batman(citizen)
-            for i in range(random.randint(1, 5)):
-                self.joker.interact_with_batman()
-            self.batman.use_gadget("batarang")
-            for i in range(random.randint(1, 3)):
-                self.batman.rest()
-            for i in range(random.randint(1, 3)):
-                self.joker.rest()
-            if self.joker.is_alive() == False or self.joker.crime_level == 0:
-                print("Batman wins! Gotham is safe once again!")
-                break
-            if self.batman.is_alive() == False or self.joker.crime_level == 100:
-                print("Joker wins! Gotham is doomed!")
-                break
+        print("Night falls over Gotham...")
+        for character in self.characters:
+            if isinstance(character, Villain):
+                character.commit_crime()
+            elif isinstance(character, Citizen):
+                if random.choice([True, False]):
+                    character.call_batman()
+        print("Batman patrols the city!")
+        for character in self.characters:
+            if isinstance(character, Villain) and character.is_alive():
+                batman.fight(character)
 
-gotham = Gotham()
-gotham.add_citizen("John")
-gotham.add_citizen("Jane")
-gotham.add_citizen("Jack")   
 
+batman = Hero()
+joker = Villain("Joker", health=80, strength=15, crime_level=10)
+riddler = Villain("Riddler", health=70, strength=10, crime_level=7)
+citizen1 = Citizen("John Doe", fear_level=5)
+citizen2 = Citizen("Jane Smith", fear_level=8)
+
+gotham = GothamCity()
+gotham.add_character(joker)
+gotham.add_character(riddler)
+gotham.add_character(citizen1)
+gotham.add_character(citizen2)
+
+# Simulate a night in Gotham
+print("--- Welcome to Gotham City ---")
 gotham.simulate_night()

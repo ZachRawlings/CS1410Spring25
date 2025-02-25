@@ -20,3 +20,20 @@ def test_mul():
 def test_div():
     assert div(2,3) == 2/3
     assert div(2,-3) == 2/-3
+
+def test_div_exception():
+    with pytest.raises(ZeroDivisionError):
+        div(2,0)
+
+class Calculator:
+    def add(self,x,y):
+        return x+y
+    def sub (self,x,y):
+        return x-y
+    def mul(self,x,y):
+        return x*y
+    def div(self,x,y):    
+        if y == 0:
+            raise ValueError('Can not divide by zero!')
+        return x/y
+
