@@ -27,3 +27,13 @@ class Sundae(IceCream):
     IceCream.__init__(self, name, scoop_count, price_per_scoop)
     self.topping_name = topping_name
     self.topping_price = topping_price
+
+class Order:
+  def __init__(self):
+    self.order = []
+
+  def add_item(self,item):
+    self.order.append(item)
+
+  def __len__(self):
+    return len(self.order)
