@@ -1,5 +1,7 @@
-try:
-    a = input("Enter a number: ")
-    result = a + 6
-except:
-    print("An error occurred.")
+while True:
+    try:
+        a = int(input("Enter a number: "))
+    except ValueError:
+        print("An error occurred.")
+    else:
+        break

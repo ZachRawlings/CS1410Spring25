@@ -1,5 +1,6 @@
 import random
 from typing import Optional
+
 # Base Character Class
 class Character:
     def __init__(self, name, health, strength)-> any:

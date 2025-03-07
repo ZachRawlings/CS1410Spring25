@@ -8,6 +8,10 @@ class Swimmable(Protocol):
     def swim(self):
         ...
 
+class Identification(Protocol):
+    id:int
+    name:str
+
 class Bird:
     def __init__(self, name):
         self.name = name
