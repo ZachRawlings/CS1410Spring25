@@ -1,6 +1,6 @@
 from dessert import DessertItem, Candy, Cookie, Icecream, Sundae, Order
-from tabulate import tabulate, SEPARATING_LINE
-from payable import Payable, PayType
+from tabulate import tabulate
+#from payable import Payable, PayType
 
 class DessertShop:
     def get_input(self, prompt, value_type=str, min_value=None):
@@ -45,12 +45,12 @@ class DessertShop:
         topping_price = self.get_input("Enter the price for topping: ", float, 0.0)  # Allows free toppings
         return Sundae(name, scoops, price_per_scoop, topping, topping_price)
     
-    def user_prompt_payment(self):
-      while True:
-        payment = input("Enter payment type (Cash, Card, Phone): ").strip().upper()
-        if payment in PayType.__members__:
-            return PayType[payment]  # Return a valid PayType enum
-        print("Invalid payment type. Please enter Cash, Card, or Phone.")
+    # def user_prompt_payment(self):
+    #   while True:
+    #     payment = input("Enter payment type (Cash, Card, Phone): ").strip().upper()
+    #     if payment in PayType.__members__:
+    #         return PayType[payment]  # Return a valid PayType enum
+    #     print("Invalid payment type. Please enter Cash, Card, or Phone.")
 
 
 def main():
@@ -124,6 +124,7 @@ def main():
     
     # print(table_data)
     # # headers = ["Dessert", "Cost", "Tax"]
+    print("done")
     print(tabulate(order.to_list(), tablefmt="fsql"))
     #print(tabulate(table_data, tablefmt="plain"))
 

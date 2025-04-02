@@ -8,10 +8,12 @@ class Bird(ABC):
     def fly(self):
         pass
 
+@runtime_checkable
 class Swimable(Protocol):
     def swim(self):
         ...
 
+@runtime_checkable
 class Walkable(Protocol):
     def walk(self):
         ...
